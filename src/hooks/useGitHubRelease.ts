@@ -17,10 +17,17 @@ export const useGitHubRelease = () => {
     useEffect(() => {
         const fetchRelease = async () => {
             try {
-                const res = await fetch('https://api.github.com/repos/KonaBess-Next/KonaBess-Next/releases/latest');
+                // Fetch all releases (includes pre-releases)
+                const res = await fetch('https://api.github.com/repos/KonaBess-Next/KonaBess-Next/releases');
                 if (!res.ok) throw new Error('Failed to fetch');
-                const json = await res.json();
-                setData(json);
+                const releases = await res.json();
+
+                // Get the most recent release (first in array)
+                if (releases && releases.length > 0) {
+                    setData(releases[0]);
+                } else {
+                    throw new Error('No releases found');
+                }
             } catch (err) {
                 console.error(err);
                 setError(true);

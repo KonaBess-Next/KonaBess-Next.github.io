@@ -1,8 +1,17 @@
 import React, { useRef } from 'react';
 import { motion, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion';
+import { useGitHubRelease } from '../../hooks/useGitHubRelease';
 
 const Hero: React.FC = () => {
     const ref = useRef<HTMLDivElement>(null);
+    const { data: release, loading } = useGitHubRelease();
+
+    // Get direct APK download link (prefer release APK)
+    const downloadUrl = release?.assets?.find(asset => asset.name.includes('release.apk'))?.browser_download_url
+        || release?.assets?.[0]?.browser_download_url
+        || 'https://github.com/KonaBess-Next/KonaBess-Next/releases';
+
+    const versionText = release?.tag_name || 'Latest';
 
     // Mouse interaction for voltage effect (chromatic aberration)
     const mouseX = useMotionValue(0);
@@ -69,10 +78,23 @@ const Hero: React.FC = () => {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.5, duration: 0.8 }}
-                    className="mt-12"
+                    className="mt-12 flex flex-col items-center"
                 >
+                    {/* Version Badge */}
+                    {!loading && release && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 1.8, duration: 0.6 }}
+                            className="mb-3 font-mono text-xs text-voltage-red tracking-widest"
+                        >
+                            {versionText}
+                        </motion.div>
+                    )}
+
                     <a
-                        href="https://github.com/KonaBess-Next/KonaBess-Next/releases/latest"
+                        href={downloadUrl}
+                        download
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group relative inline-flex px-8 py-3 bg-transparent overflow-hidden border border-voltage-red/50 hover:border-voltage-red transition-colors"
