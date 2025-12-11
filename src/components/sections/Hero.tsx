@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion';
 import { useGitHubRelease } from '../../hooks/useGitHubRelease';
+import LoadingSkeleton from '../LoadingSkeleton';
 
 const Hero: React.FC = () => {
     const ref = useRef<HTMLDivElement>(null);
@@ -40,6 +41,7 @@ const Hero: React.FC = () => {
             ref={ref}
             onMouseMove={handleMouseMove}
             className="relative h-screen w-full flex flex-col justify-center items-center overflow-hidden bg-obsidian text-white select-none"
+            aria-label="Hero section with download button"
         >
             <div className="z-10 flex flex-col items-center relative">
                 <motion.h1
@@ -80,30 +82,37 @@ const Hero: React.FC = () => {
                     transition={{ delay: 1.5, duration: 0.8 }}
                     className="mt-12 flex flex-col items-center"
                 >
-                    {/* Version Badge */}
-                    {!loading && release && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 1.8, duration: 0.6 }}
-                            className="mb-3 font-mono text-xs text-voltage-red tracking-widest"
-                        >
-                            {versionText}
-                        </motion.div>
-                    )}
+                    {loading ? (
+                        <LoadingSkeleton />
+                    ) : (
+                        <>
+                            {/* Version Badge */}
+                            {release && (
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 1.8, duration: 0.6 }}
+                                    className="mb-3 font-mono text-xs text-voltage-red tracking-widest"
+                                >
+                                    {versionText}
+                                </motion.div>
+                            )}
 
-                    <a
-                        href={downloadUrl}
-                        download
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group relative inline-flex px-8 py-3 bg-transparent overflow-hidden border border-voltage-red/50 hover:border-voltage-red transition-colors"
-                    >
-                        <div className="absolute inset-0 bg-voltage-red/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-                        <span className="relative font-mono text-xs sm:text-sm tracking-widest text-voltage-red group-hover:text-white transition-colors duration-300 flex items-center gap-2">
-                            INITIALIZE DOWNLOAD
-                        </span>
-                    </a>
+                            <a
+                                href={downloadUrl}
+                                download
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group relative inline-flex px-8 py-3 bg-transparent overflow-hidden border border-voltage-red/50 hover:border-voltage-red transition-colors"
+                                aria-label="Download KonaBess Next APK"
+                            >
+                                <div className="absolute inset-0 bg-voltage-red/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" aria-hidden="true" />
+                                <span className="relative font-mono text-xs sm:text-sm tracking-widest text-voltage-red group-hover:text-white transition-colors duration-300 flex items-center gap-2">
+                                    INITIALIZE DOWNLOAD
+                                </span>
+                            </a>
+                        </>
+                    )}
                 </motion.div>
             </div>
 
@@ -117,3 +126,4 @@ const Hero: React.FC = () => {
 };
 
 export default Hero;
+

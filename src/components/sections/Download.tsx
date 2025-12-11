@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useGitHubRelease } from '../../hooks/useGitHubRelease';
 import { FaDownload } from 'react-icons/fa';
+import LoadingSkeleton from '../LoadingSkeleton';
 
 const Download: React.FC = () => {
     const { data, loading, error } = useGitHubRelease();
@@ -10,7 +11,7 @@ const Download: React.FC = () => {
     const downloadUrl = data?.assets?.[0]?.browser_download_url || data?.html_url || "https://github.com/KonaBess-Next/KonaBess-Next/releases";
 
     return (
-        <section className="min-h-screen w-full flex flex-col items-center justify-center relative bg-obsidian text-white overflow-hidden py-20">
+        <section className="min-h-screen w-full flex flex-col items-center justify-center relative bg-obsidian text-white overflow-hidden py-20" aria-label="Download section">
 
             {/* Background Version Number */}
             <motion.div
@@ -38,27 +39,32 @@ const Download: React.FC = () => {
                     </p>
                 </motion.div>
 
-                <motion.a
-                    href={downloadUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover="hover"
-                    initial="initial"
-                    className="group relative px-12 py-6 border-2 border-voltage-red bg-transparent overflow-hidden cursor-pointer"
-                >
-                    <motion.div
-                        variants={{
-                            initial: { x: "-100%" },
-                            hover: { x: 0 }
-                        }}
-                        transition={{ duration: 0.3, ease: "circOut" }}
-                        className="absolute inset-0 bg-voltage-red"
-                    />
-                    <div className="relative flex items-center space-x-4 font-display text-xl md:text-2xl font-bold uppercase tracking-wider group-hover:text-black transition-colors z-10">
-                        <span>Initialize Download</span>
-                        <FaDownload />
-                    </div>
-                </motion.a>
+                {loading ? (
+                    <LoadingSkeleton />
+                ) : (
+                    <motion.a
+                        href={downloadUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover="hover"
+                        initial="initial"
+                        aria-label="Download KonaBess Next latest release"
+                        className="group relative px-12 py-6 border-2 border-voltage-red bg-transparent overflow-hidden cursor-pointer"
+                    >
+                        <motion.div
+                            variants={{
+                                initial: { x: "-100%" },
+                                hover: { x: 0 }
+                            }}
+                            transition={{ duration: 0.3, ease: "circOut" }}
+                            className="absolute inset-0 bg-voltage-red"
+                        />
+                        <div className="relative flex items-center space-x-4 font-display text-xl md:text-2xl font-bold uppercase tracking-wider group-hover:text-black transition-colors z-10">
+                            <span>Initialize Download</span>
+                            <FaDownload />
+                        </div>
+                    </motion.a>
+                )}
 
                 {error && (
                     <p className="text-red-500 font-mono text-xs">

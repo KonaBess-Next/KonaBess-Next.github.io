@@ -28,7 +28,7 @@ const Features: React.FC = () => {
     }, []);
 
     return (
-        <section ref={containerRef} className="relative min-h-[200vh] bg-obsidian py-40 overflow-hidden">
+        <section ref={containerRef} className="relative min-h-[200vh] bg-obsidian py-40 overflow-hidden" aria-label="Features showcase">
             {/* Feature 1: GPU Frequency List */}
             <div className="flex flex-col items-center justify-center mb-60 opacity-80">
                 <h3 className="text-gray-500 font-mono text-xs tracking-widest mb-8">GPU_FREQUENCY_TABLE</h3>

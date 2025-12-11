@@ -27,7 +27,7 @@ const ScrollWord = ({ children, className }: { children: React.ReactNode, classN
 
 const Philosophy: React.FC = () => {
     return (
-        <section className="relative w-full min-h-[150vh] flex flex-col items-center pt-40 px-6 bg-obsidian-light/50">
+        <section className="relative w-full min-h-[150vh] flex flex-col items-center pt-40 px-6 bg-obsidian-light/50" aria-label="Philosophy section">
             <div className="max-w-6xl mx-auto text-center leading-tight">
                 <h2 className="font-display text-4xl md:text-7xl lg:text-9xl uppercase tracking-tighter text-gray-400 opacity-20 mb-24 sticky top-10">
                     Philosophy
